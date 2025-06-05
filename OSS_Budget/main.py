@@ -1,6 +1,5 @@
 from budget import Budget
 
-
 def main():
     budget = Budget()
 
@@ -9,7 +8,10 @@ def main():
         print("1. 지출 추가")
         print("2. 지출 목록 보기")
         print("3. 총 지출 보기")
-        print("4. 종료")
+        print("4. 월 용돈 설정")  
+        print("5. 하루 사용 가능 금액 보기")  
+        print("6. 종료")
+        
         choice = input("선택 > ")
 
         if choice == "1":
@@ -20,21 +22,35 @@ def main():
             except ValueError:
                 print("잘못된 금액입니다.\n")
                 continue
-            budget.add_expense(category, description, amount)
+
+            date_input = input("날짜 입력 (예: 20250604, 생략 시 오늘 날짜): ").strip()
+            if not date_input:
+                date_input = None
+
+            budget.add_expense(category, description, amount, date_input)
 
         elif choice == "2":
             budget.list_expenses()
 
         elif choice == "3":
             budget.total_spent()
-
+          
         elif choice == "4":
+            try:
+                amount = int(input("월 용돈 금액(원): "))
+                budget.set_monthly_budget(amount)
+            except ValueError:
+                print("숫자를 입력하세요.\n")
+
+        elif choice == "5":
+            budget.recommended_daily_spending() 
+
+        elif choice == "6":
             print("가계부를 종료합니다.")
             break
 
         else:
             print("잘못된 선택입니다.\n")
-
 
 if __name__ == "__main__":
     main()
